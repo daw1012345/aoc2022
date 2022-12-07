@@ -1,17 +1,12 @@
-data = open("day7/input.txt", 'r').readlines()
-current_path = []
-structure = {"/": 0}
-for l in data:
+current_path, structure = [], {"/": 0}
+for l in open("day7/input.txt", 'r').readlines():
     match l.strip().split(" "):
-        case ["$", "cd", "/"]:
-            current_path.clear()
-        case ["$", "cd", ".."]:
-            current_path.pop()
+        case ["$", "cd", "/"]: current_path.clear()
+        case ["$", "cd", ".."]:current_path.pop()
+        case ["$", "ls"] | ["dir", *_]: pass
         case ["$", "cd", path]:
             current_path.append(path)
             structure["/" if not current_path else "/" + '/'.join(current_path)] = structure["/" if not current_path else "/" + '/'.join(current_path)] if ("/" if not current_path else "/" + '/'.join(current_path)) in structure.keys() else 0
-        case ["$", "ls"] | ["dir", *_]:
-            pass
         case [fsize, fname]:
             structure["/" if not current_path else "/" + '/'.join(current_path)] += int(fsize)
             for k in (x for x, _ in structure.items() if ("/" if not current_path else "/" + '/'.join(current_path)).startswith(x) and x != ("/" if not current_path else "/" + '/'.join(current_path))):
