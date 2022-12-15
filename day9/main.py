@@ -12,11 +12,7 @@ def move_snake():
             continue
         if snake[i] in [(snake[i-1][0]-xd, snake[i-1][1]-yd) for (xd,yd) in DIAG_MOVES+STRAIGHT_MOVES+[(0,0)]]: 
             continue
-        common = set([(snake[i][0]+xd, snake[i][1]+yd) for (xd,yd) in STRAIGHT_MOVES]).intersection(set([(snake[i-1][0]+xd, snake[i-1][1]+yd) for (xd,yd) in STRAIGHT_MOVES]))
-        if common:
-            snake[i] = common.pop()
-            continue
-        common = set([(snake[i][0]+xd, snake[i][1]+yd) for (xd,yd) in DIAG_MOVES]).intersection(set([(snake[i-1][0]+xd, snake[i-1][1]+yd) for (xd,yd) in DIAG_MOVES+STRAIGHT_MOVES]))
+        common = sorted(set([(snake[i][0]+xd, snake[i][1]+yd) for (xd,yd) in STRAIGHT_MOVES+DIAG_MOVES]).intersection(set([(snake[i-1][0]+xd, snake[i-1][1]+yd) for (xd,yd) in STRAIGHT_MOVES+DIAG_MOVES])), key=lambda x: x[0]+x[1])
         snake[i] = common.pop()
     visited.add(snake[-1])
 
